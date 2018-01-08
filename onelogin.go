@@ -16,10 +16,12 @@ import (
 const (
 	TOKEN_URL = "https://api.%s.onelogin.com/auth/oauth2/v2/token"
 	AUTH_URL = "https://api.%s.onelogin.com/auth/oauth2/auth"
+	BASE_PATH = "https://api.%s.onelogin.com/api/1/%s"
 )
 
 type OneloginClient struct {
 	*http.Client
+	region string
 }
 
 func NewOneloginClient(clientId, clientSecret, region string) (*OneloginClient, error) {
@@ -39,7 +41,7 @@ func NewOneloginClient(clientId, clientSecret, region string) (*OneloginClient, 
 		return nil, err
 	}
 
-	client := conf.GetClient(ctx, token)
+	client := conf.GetClient(ctx, token, region)
 	return client, nil
 }
 
@@ -58,7 +60,7 @@ func (c *OneloginClient) GetSamlAssertion(appId, subdomain, username, password, 
 		AppId: appId,
 		Subdomain: subdomain,
 	}
-	resp, err := c.PostJson("https://api.us.onelogin.com/api/1/saml_assertion", req_params)
+	resp, err := c.PostJson(fmt.Sprintf(BASE_PATH, c.region, "saml_assertion"), req_params)
 	if err != nil {
 		return nil, err
 	}
@@ -125,8 +127,8 @@ func (conf *OAuth2Config) GetToken() (*oauth2.Token, error) {
 	return token, nil
 }
 
-func (conf *OAuth2Config) GetClient(ctx context.Context, t *oauth2.Token) *OneloginClient {
-	return &OneloginClient{conf.Client(ctx, t)}
+func (conf *OAuth2Config) GetClient(ctx context.Context, t *oauth2.Token, region string) *OneloginClient {
+	return &OneloginClient{conf.Client(ctx, t), region}
 }
 
 type samlAssertionRequest struct {

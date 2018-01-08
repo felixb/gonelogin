@@ -1,0 +1,7 @@
+.idea
+.get-deps
+/config.go
+run.sh
+*_amd64
+*_darwin
+*.exe

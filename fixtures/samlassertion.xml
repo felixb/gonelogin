@@ -1,0 +1,24 @@
+<samlp:Response xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+                ID="XXXXXXXXXXXXXXXXXXXXXXXX" Version="2.0" IssueInstant="2018-01-07T17:13:45Z"
+                Destination="https://signin.aws.amazon.com/saml">
+  <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="2.0"
+                  ID="YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY" IssueInstant="2018-01-07T17:13:45Z">
+    <saml:AttributeStatement>
+      <saml:Attribute Name="https://aws.amazon.com/SAML/Attributes/Role"
+                      NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
+        <saml:AttributeValue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">
+          arn:aws:iam::11111111111111:role/some-role,arn:aws:iam::11111111111111:saml-provider/some-provider
+        </saml:AttributeValue>
+        <saml:AttributeValue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">
+          arn:aws:iam::22222222222222:role/some-role,arn:aws:iam::22222222222222:saml-provider/some-provider
+        </saml:AttributeValue>
+        <saml:AttributeValue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xs:string">
+          arn:aws:iam::22222222222222:role/some-other-role,arn:aws:iam::22222222222222:saml-provider/some-provider
+        </saml:AttributeValue>
+      </saml:Attribute>
+    </saml:AttributeStatement>
+  </saml:Assertion>
+</samlp:Response>
+
+

@@ -16,7 +16,15 @@ const (
 
 func dieOnError(err error, message string) {
 	if err != nil {
-		fmt.Printf("%s: %v\n", message, err)
+		fmt.Fprintf(os.Stderr, "%s: %v\n", message, err)
+		os.Exit(1)
+	}
+}
+
+func checkStringFlagNotEmpty(name string, f *string) {
+	if f == nil || *f == "" {
+		fmt.Fprintf(os.Stderr, "Missing mandatory parameter: %s\n\n", name)
+		flag.Usage()
 		os.Exit(1)
 	}
 }
@@ -43,6 +51,10 @@ func main() {
 	oneloginRegion := flag.String("onelogin-region", DEFAULT_ONELOGIN_REGION, "onelogin region, us/eu")
 	mfaCode := flag.String("mfa-code", "", "MFA code")
 	flag.Parse()
+
+	checkStringFlagNotEmpty("username", username)
+	checkStringFlagNotEmpty("password", password)
+	checkStringFlagNotEmpty("mfa-code", mfaCode)
 
 	client, err := NewOneloginClient(CLIENT_ID, CLIENT_SECRET, *oneloginRegion)
 	dieOnError(err, "Error creating onelogin client")

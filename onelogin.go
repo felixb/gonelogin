@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -61,6 +62,10 @@ func (c *OneloginClient) GetSamlAssertion(appId, subdomain, username, password, 
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(resp.Status)
+	}
+
 	samlResponse := &samlAssertionResponse{}
 	err = parseJson(resp, samlResponse)
 	if err != nil {
@@ -78,6 +83,9 @@ func (c *OneloginClient) GetSamlAssertion(appId, subdomain, username, password, 
 	resp, err = c.PostJson(samlResponse.Data[0].CallbackUrl, verify_req_params)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(resp.Status)
 	}
 	verifyResponse := &verifyFactorResponse{}
 	err = parseJson(resp, verifyResponse)
